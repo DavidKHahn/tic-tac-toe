@@ -38,13 +38,13 @@ build an interactive tic-tac-toe game with React (from scratch) - coding assessm
 
 First, we’ll add a constructor to the class to initialize the state:
 
-class Square extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: null,
-    };
-  }
+        class Square extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                value: null,
+                };
+        }
 
 8. Now we’ll change the Square’s render method to display the current state’s value when clicked:
 
@@ -53,24 +53,83 @@ Replace the onClick={...} event handler with onClick={() => this.setState({value
 Put the className and onClick props on separate lines for better readability.
 After these changes, the <button> tag that is returned by the Square’s render method looks like this:
 
-class Square extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: null,
-    };
-  }
+        class Square extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                value: null,
+                };
+            }
 
-  render() {
-    return (
-      <button
-        className="square"
-        onClick={() => this.setState({value: 'X'})}
-      >
-        {this.state.value}
-      </button>
-    );
-  }
-}
+            render() {
+                return (
+                <button
+                    className="square"
+                    onClick={() => this.setState({value: 'X'})}
+                >
+                    {this.state.value}
+                </button>
+                );
+            }
+        }
 
+9. Add a constructor to the Board and set the Board’s initial state to contain an array of 9 nulls corresponding to the 9 squares:
 
+        class Board extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                squares: Array(9).fill(null),
+                };
+        }
+10. Modify the Board’s renderSquare method to read from it:
+
+        renderSquare(i) {
+            return <Square value={this.state.squares[i]} />;
+        }
+11. Pass down a function from the Board to the Square, and we’ll have Square call that function when a square is clicked. We’ll change the renderSquare method in Board to:
+
+        renderSquare(i) {
+            return (
+            <Square
+                value={this.state.squares[i]}
+                onClick={() => this.handleClick(i)}
+            />
+            );
+        }
+12. Make the following changes to Square:
+
+ - Replace this.state.value with this.props.value in Square’s render method
+ - Replace this.setState() with this.props.onClick() in Square’s render method
+ - Delete the constructor from Square because Square no longer keeps track of the game’s state
+
+After these changes, the Square component looks like this:
+
+        class Square extends React.Component {
+            render() {
+                return (
+                <button
+                    className="square"
+                    onClick={() => this.props.onClick()}
+                >
+                    {this.props.value}
+                </button>
+                );
+            }
+        }
+13. Add handleClick to the Board class:
+
+        class Board extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                squares: Array(9).fill(null),
+                };
+        }
+
+        handleClick(i) {
+            const squares = this.state.squares.slice();
+            squares[i] = 'X';
+            this.setState({squares: squares});
+        }
+14.
