@@ -1,6 +1,6 @@
-# tic-tac-toe
+# tic-tac-toe 
 
-build an interactive tic-tac-toe game with React (from scratch) - coding assessment
+Build an interactive tic-tac-toe game using React from scratch - coding assessment.
 
 1. `npx create-react-app tic-tac-toe` (make sure node is up-to-date!)
 2. Delete original source files inside 'src' folder (`cd tic-tac-toe`, `cd src`, `rm -f *`, `cd..`)
@@ -12,6 +12,7 @@ build an interactive tic-tac-toe game with React (from scratch) - coding assessm
                 return <Square value={i} />;
             }
         }
+        
 5. Change Square’s render method to show that value by replacing {/* TODO */} with {this.props.value}:
 
         class Square extends React.Component {
@@ -23,6 +24,7 @@ build an interactive tic-tac-toe game with React (from scratch) - coding assessm
                 );
             }
         }
+        
 6. Change the button tag that is returned from the Square component’s render() function to this:
 
         class Square extends React.Component {
@@ -34,6 +36,7 @@ build an interactive tic-tac-toe game with React (from scratch) - coding assessm
                 );
             }
         }
+        
 7. Store the current value of the Square in this.state, and change it when the Square is clicked.
 
 First, we’ll add a constructor to the class to initialize the state:
@@ -82,11 +85,13 @@ After these changes, the <button> tag that is returned by the Square’s render 
                 squares: Array(9).fill(null),
                 };
         }
+        
 10. Modify the Board’s renderSquare method to read from it:
 
         renderSquare(i) {
             return <Square value={this.state.squares[i]} />;
         }
+        
 11. Pass down a function from the Board to the Square, and we’ll have Square call that function when a square is clicked. We’ll change the renderSquare method in Board to:
 
         renderSquare(i) {
@@ -97,6 +102,7 @@ After these changes, the <button> tag that is returned by the Square’s render 
             />
             );
         }
+        
 12. Make the following changes to Square:
 
  - Replace this.state.value with this.props.value in Square’s render method
@@ -117,6 +123,7 @@ After these changes, the Square component looks like this:
                 );
             }
         }
+        
 13. Add handleClick to the Board class:
 
         class Board extends React.Component {
@@ -132,4 +139,5 @@ After these changes, the Square component looks like this:
             squares[i] = 'X';
             this.setState({squares: squares});
         }
+        
 14.
