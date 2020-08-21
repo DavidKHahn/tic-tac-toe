@@ -1,4 +1,4 @@
-# tic-tac-toe 
+# tic-tac-toe
 
 Build an interactive tic-tac-toe game using React from scratch - coding assessment.
 
@@ -12,7 +12,7 @@ Build an interactive tic-tac-toe game using React from scratch - coding assessme
                 return <Square value={i} />;
             }
         }
-        
+
 5. Change Square’s render method to show that value by replacing {/* TODO */} with {this.props.value}:
 
         class Square extends React.Component {
@@ -24,7 +24,7 @@ Build an interactive tic-tac-toe game using React from scratch - coding assessme
                 );
             }
         }
-        
+
 6. Change the button tag that is returned from the Square component’s render() function to this:
 
         class Square extends React.Component {
@@ -36,7 +36,7 @@ Build an interactive tic-tac-toe game using React from scratch - coding assessme
                 );
             }
         }
-        
+
 7. Store the current value of the Square in this.state, and change it when the Square is clicked.
 
 First, we’ll add a constructor to the class to initialize the state:
@@ -85,13 +85,13 @@ After these changes, the <button> tag that is returned by the Square’s render 
                 squares: Array(9).fill(null),
                 };
         }
-        
+
 10. Modify the Board’s renderSquare method to read from it:
 
         renderSquare(i) {
             return <Square value={this.state.squares[i]} />;
         }
-        
+
 11. Pass down a function from the Board to the Square, and we’ll have Square call that function when a square is clicked. We’ll change the renderSquare method in Board to:
 
         renderSquare(i) {
@@ -102,7 +102,7 @@ After these changes, the <button> tag that is returned by the Square’s render 
             />
             );
         }
-        
+
 12. Make the following changes to Square:
 
  - Replace this.state.value with this.props.value in Square’s render method
@@ -123,7 +123,7 @@ After these changes, the Square component looks like this:
                 );
             }
         }
-        
+
 13. Add handleClick to the Board class:
 
         class Board extends React.Component {
@@ -139,5 +139,34 @@ After these changes, the Square component looks like this:
             squares[i] = 'X';
             this.setState({squares: squares});
         }
-        
-14.
+
+14. Replace the Square class with this function:
+
+        function Square(props) {
+            return (
+                <button className="square" onClick={props.onClick}>
+                {props.value}
+                </button>
+            );
+        }
+15. Set the first move to be “X” by default. We can set this default by modifying the initial state in our Board constructor:
+
+        class Board extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                squares: Array(9).fill(null),
+                xIsNext: true,
+                };
+        }
+
+16. xIsNext (a boolean) will be flipped to determine which player goes next and the game’s state will be saved. We’ll update the Board’s handleClick function to flip the value of xIsNext:
+
+        handleClick(i) {
+            const squares = this.state.squares.slice();
+            squares[i] = this.state.xIsNext ? 'X' : 'O';
+            this.setState({
+                squares: squares,
+                xIsNext: !this.state.xIsNext,
+            });
+        }
