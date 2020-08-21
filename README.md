@@ -172,8 +172,8 @@ After these changes, the Square component looks like this:
         }
 17. Change the “status” text in Board’s render so that it displays which player has the next turn:
 
-    render() {
-        const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+            render() {
+                const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 18. Copy this helper function and paste it at the end of the file:
 
         function calculateWinner(squares) {
@@ -197,19 +197,19 @@ After these changes, the Square component looks like this:
         }
 19. We will call calculateWinner(squares) in the Board’s render function to check if a player has won. If a player has won, we can display text such as “Winner: X” or “Winner: O”. We’ll replace the status declaration in Board’s render function with this code:
 
-    render() {
-            const winner = calculateWinner(this.state.squares);
-            let status;
-            if (winner) {
-            status = 'Winner: ' + winner;
-            } else {
-            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-        }
+            render() {
+                    const winner = calculateWinner(this.state.squares);
+                    let status;
+                    if (winner) {
+                    status = 'Winner: ' + winner;
+                    } else {
+                    status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+                }
 
 20. We can now change the Board’s handleClick function to return early by ignoring a click if someone has won the game or if a Square is already filled:
 
-    handleClick(i) {
-        const squares = this.state.squares.slice();
-        if (calculateWinner(squares) || squares[i]) {
-            return;
-        }
+               handleClick(i) {
+                const squares = this.state.squares.slice();
+                if (calculateWinner(squares) || squares[i]) {
+                    return;
+                }
