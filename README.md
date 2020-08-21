@@ -2,10 +2,10 @@
 
 Build an interactive tic-tac-toe game using React from scratch - coding assessment.
 
-1. `npx create-react-app tic-tac-toe` (make sure node is up-to-date!)
-2. Delete original source files inside 'src' folder (`cd tic-tac-toe`, `cd src`, `rm -f *`, `cd..`)
-3. Create 'index.css', 'index.js' inside 'src' folder.
-4. In Board’s renderSquare method, change the code to pass a prop called value to the Square:
+1.  `npx create-react-app tic-tac-toe` (make sure node is up-to-date!)
+2.  Delete original source files inside 'src' folder (`cd tic-tac-toe`, `cd src`, `rm -f *`, `cd..`)
+3.  Create 'index.css', 'index.js' inside 'src' folder.
+4.  In Board’s renderSquare method, change the code to pass a prop called value to the Square:
 
         class Board extends React.Component {
             renderSquare(i) {
@@ -13,7 +13,7 @@ Build an interactive tic-tac-toe game using React from scratch - coding assessme
             }
         }
 
-5. Change Square’s render method to show that value by replacing {/* TODO */} with {this.props.value}:
+5.  Change Square’s render method to show that value by replacing {/_ TODO _/} with {this.props.value}:
 
         class Square extends React.Component {
             render() {
@@ -25,7 +25,7 @@ Build an interactive tic-tac-toe game using React from scratch - coding assessme
             }
         }
 
-6. Change the button tag that is returned from the Square component’s render() function to this:
+6.  Change the button tag that is returned from the Square component’s render() function to this:
 
         class Square extends React.Component {
             render() {
@@ -37,7 +37,7 @@ Build an interactive tic-tac-toe game using React from scratch - coding assessme
             }
         }
 
-7. Store the current value of the Square in this.state, and change it when the Square is clicked.
+7.  Store the current value of the Square in this.state, and change it when the Square is clicked.
 
 First, we’ll add a constructor to the class to initialize the state:
 
@@ -76,7 +76,7 @@ After these changes, the <button> tag that is returned by the Square’s render 
             }
         }
 
-9. Add a constructor to the Board and set the Board’s initial state to contain an array of 9 nulls corresponding to the 9 squares:
+9.  Add a constructor to the Board and set the Board’s initial state to contain an array of 9 nulls corresponding to the 9 squares:
 
         class Board extends React.Component {
             constructor(props) {
@@ -105,9 +105,9 @@ After these changes, the <button> tag that is returned by the Square’s render 
 
 12. Make the following changes to Square:
 
- - Replace this.state.value with this.props.value in Square’s render method
- - Replace this.setState() with this.props.onClick() in Square’s render method
- - Delete the constructor from Square because Square no longer keeps track of the game’s state
+- Replace this.state.value with this.props.value in Square’s render method
+- Replace this.setState() with this.props.onClick() in Square’s render method
+- Delete the constructor from Square because Square no longer keeps track of the game’s state
 
 After these changes, the Square component looks like this:
 
@@ -149,6 +149,7 @@ After these changes, the Square component looks like this:
                 </button>
             );
         }
+
 15. Set the first move to be “X” by default. We can set this default by modifying the initial state in our Board constructor:
 
         class Board extends React.Component {
@@ -170,10 +171,12 @@ After these changes, the Square component looks like this:
                 xIsNext: !this.state.xIsNext,
             });
         }
+
 17. Change the “status” text in Board’s render so that it displays which player has the next turn:
 
             render() {
                 const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+
 18. Copy this helper function and paste it at the end of the file:
 
         function calculateWinner(squares) {
@@ -195,6 +198,7 @@ After these changes, the Square component looks like this:
             }
             return null;
         }
+
 19. We will call calculateWinner(squares) in the Board’s render function to check if a player has won. If a player has won, we can display text such as “Winner: X” or “Winner: O”. We’ll replace the status declaration in Board’s render function with this code:
 
             render() {
@@ -213,3 +217,71 @@ After these changes, the Square component looks like this:
                 if (calculateWinner(squares) || squares[i]) {
                     return;
                 }
+
+21. We’ll set up the initial state for the Game component within its constructor:
+
+            class Game extends React.Component {
+                constructor(props) {
+                    super(props);
+                    this.state = {
+                    history: [{
+                        squares: Array(9).fill(null),
+                    }],
+                    xIsNext: true,
+                };
+            }
+
+22.  We now have a single click handler in Board for many Squares, we’ll need to pass the location of each Square into the onClick handler to indicate which Square was clicked:
+
+ - Delete the constructor in Board.
+ - Replace this.state.squares[i] with this.props.squares[i] in Board’s renderSquare.
+ - Replace this.handleClick(i) with this.props.onClick(i) in Board’s renderSquare.
+
+ 23. Update the Game component’s render function to use the most recent history entry to determine and display the game’s status:
+
+        render() {
+            const history = this.state.history;
+            const current = history[history.length - 1];
+            const winner = calculateWinner(current.squares);
+            let status;
+            if (winner) {
+                status = 'Winner: ' + winner;
+            } else {
+                status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+            }
+
+            return (
+            <div className="game">
+                <div className="game-board">
+                <Board
+                    squares={current.squares}
+                    onClick={(i) => this.handleClick(i)}
+                />
+                </div>
+                <div className="game-info">
+                    <div>{status}</div>
+
+24. The Game component is now rendering the game’s status, we can remove the corresponding code from the Board’s render method. After refactoring, the Board’s render function looks like this:
+
+        render() {
+            return (
+            <div>
+                <div className="board-row">
+
+25. We need to move the handleClick method from the Board component to the Game component. We also need to modify handleClick because the Game component’s state is structured differently. Within the Game’s handleClick method, we concatenate new history entries onto history.
+
+        handleClick(i) {
+            const history = this.state.history;
+            const current = history[history.length - 1];
+            const squares = current.squares.slice();
+            if (calculateWinner(squares) || squares[i]) {
+                return;
+            }
+            squares[i] = this.state.xIsNext ? 'X' : 'O';
+            this.setState({
+            history: history.concat([{
+                squares: squares,
+            }]),
+            xIsNext: !this.state.xIsNext,
+            });
+        }
