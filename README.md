@@ -323,3 +323,58 @@ After these changes, the Square component looks like this:
                 <div>{status}</div>
                 <ol>{moves}</ol>
 
+27. In the Game component’s render method, we can add the key as <li key={move}> and React’s warning about keys should disappear:
+
+        const moves = history.map((step, move) => {
+            const desc = move ?
+                'Go to move #' + move :
+                'Go to game start';
+            return (
+                <li key={move}>
+
+28. Add stepNumber: 0 to the initial state in Game’s constructor:
+
+        class Game extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                history: [{
+                    squares: Array(9).fill(null),
+                }],
+                stepNumber: 0,
+
+29. Next, we’ll define the jumpTo method in Game to update that stepNumber. We also set xIsNext to true if the number that we’re changing stepNumber to is even:
+
+        handleClick(i) {
+            // this method has not changed
+        }
+
+        jumpTo(step) {
+            this.setState({
+            stepNumber: step,
+            xIsNext: (step % 2) === 0,
+            });
+        }
+
+30. Replace reading this.state.history with this.state.history.slice(0, this.state.stepNumber + 1). This ensures that if we “go back in time” and then make a new move from that point, we throw away all the “future” history that would now become incorrect:
+
+        handleClick(i) {
+            const history = this.state.history.slice(0, this.state.stepNumber + 1);
+            const current = history[history.length - 1];
+            const squares = current.squares.slice();
+            if (calculateWinner(squares) || squares[i]) {
+                return;
+            }
+            squares[i] = this.state.xIsNext ? 'X' : 'O';
+            this.setState({
+                history: history.concat([{
+                    squares: squares
+                }]),
+                stepNumber: history.length,
+31. Modify the Game component’s render method from always rendering the last move to rendering the currently selected move according to stepNumber:
+
+        render() {
+            const history = this.state.history;
+            const current = history[this.state.stepNumber];
+
+
