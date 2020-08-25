@@ -1,6 +1,6 @@
 # tic-tac-toe
 
-Build an interactive tic-tac-toe game using React from scratch - coding assessment.
+Build an interactive tic-tac-toe game using React from scratch - **coding assessment**.
 
 1.  `npx create-react-app tic-tac-toe` (make sure node is up-to-date!)
 2.  Delete original source files inside 'src' folder (`cd tic-tac-toe`, `cd src`, `rm -f *`, `cd..`)
@@ -377,4 +377,5 @@ After these changes, the Square component looks like this:
             const history = this.state.history;
             const current = history[this.state.stepNumber];
 
+Thanks to Official React Page for this!
 
